@@ -75,11 +75,11 @@ def concat_express_and_label_source_data():
 
 # 预处理成套数据
 def concat_express_and_label_and_gcn_data(file_name = 'ssr1'):
-    source_gene_express = pd.read_csv('../data/SRR1_result/SRR1_Fibroid/SRR1_F_merge.csv', index_col=0)
-    target_gene_express = pd.read_csv('../data/SRR1_result/SRR1_Fibroid/Fib_merge.csv', index_col=0)
+    source_gene_express = pd.read_csv('../data/new2/Fibroid/new2_F_merge.csv', index_col=0)
+    target_gene_express = pd.read_csv('../data/new2/Fibroid/Fib_merge.csv', index_col=0)
     gene_gcn = pd.read_csv('../data/net/gene_gcn_feas.csv')
-    src_label = pd.read_csv('../data/SRR1_result/SRR1_Fibroid/SRR1_meta.csv')
-    tar_label = pd.read_csv('../data/SRR1_result/SRR1_Fibroid/Fib_meta.csv')
+    src_label = pd.read_csv('../data/new2/Fibroid/new2_meta.csv')
+    tar_label = pd.read_csv('../data/new2/Fibroid/Fib_meta.csv')
     source_gene_express.reset_index(inplace=True)
     source_gene_express['index'] = source_gene_express['index'].apply(lambda x: str(x).lower())
     target_gene_express.reset_index(inplace=True)
@@ -130,7 +130,7 @@ def concat_express_and_label_and_gcn_data(file_name = 'ssr1'):
     # 剔除数量过少的
     label_count = source_gene_express_label[['Cell_type','index']].groupby(by=['Cell_type']).count()
     target_label_count = target_gene_express_label[['Cell_type', 'index']].groupby(by=['Cell_type']).count()
-    label_count = label_count[label_count['index'] > 260]
+    label_count = label_count[label_count['index'] > 0]
     label_count = label_count.reset_index()
     label_count.rename(columns={'Cell_type':'CellType','index':'count'}, inplace=True)
     label_count.reset_index(inplace=True)
@@ -413,22 +413,23 @@ class GeneDotGCNDataSet(data.Dataset):
 # 按间距中的绿色按钮以运行脚本。
 if __name__ == '__main__':
     pass
-    # concat_express_and_label_and_gcn_data()
-    filename = 'ssr3_M'
-    left_concat_express_and_label_and_gcn_data(filename)
 
-    plus = '_gcn'
-    zipgcn = True
-    gene_express_path = f'../data/train/{filename}/source_gene_express_label.csv'
-    gcn_path = f'../data/train/{filename}/gcn_scala_feas.csv'
-    target_path = f'../data/train/{filename}{plus}/source_for_model.csv'
-    make_dot_features(gene_express_path,gcn_path,target_path,zipgcn)
-    gene_express_path = f'../data/train/{filename}/valid_gene_express_label.csv'
-    target_path = f'../data/train/{filename}{plus}/valid_for_model.csv'
-    make_dot_features(gene_express_path, gcn_path, target_path, zipgcn)
-    gene_express_path = f'../data/train/{filename}/test_gene_express_label.csv'
-    target_path = f'../data/train/{filename}{plus}/test_for_model.csv'
-    make_dot_features(gene_express_path, gcn_path, target_path, zipgcn)
+    # filename = 'new2_F'
+    # concat_express_and_label_and_gcn_data(filename)
+    # # left_concat_express_and_label_and_gcn_data(filename)
+    #
+    # plus = '_gcn'
+    # zipgcn = True
+    # gene_express_path = f'../data/train/{filename}/source_gene_express_label.csv'
+    # gcn_path = f'../data/train/{filename}/gcn_scala_feas.csv'
+    # target_path = f'../data/train/{filename}{plus}/source_for_model.csv'
+    # make_dot_features(gene_express_path,gcn_path,target_path,zipgcn)
+    # gene_express_path = f'../data/train/{filename}/valid_gene_express_label.csv'
+    # target_path = f'../data/train/{filename}{plus}/valid_for_model.csv'
+    # make_dot_features(gene_express_path, gcn_path, target_path, zipgcn)
+    # gene_express_path = f'../data/train/{filename}/test_gene_express_label.csv'
+    # target_path = f'../data/train/{filename}{plus}/test_for_model.csv'
+    # make_dot_features(gene_express_path, gcn_path, target_path, zipgcn)
 
 
     # gene_express_path = '../data/train/gene_express_label_gcn.csv'
@@ -438,8 +439,8 @@ if __name__ == '__main__':
     #     if i % 500 == 0:print(f'{i} is ok')
     #     dataset1.__getitem__(i)
     # dataset1.__len__()
-    # path = '../data/train/ssr1_left_zip_gcn/source_for_model.csv'
-    # ratio = 0.5
-    # sample_func(path, ratio)
+    path = '../data/train/new2_F_gcn/valid_for_model.csv'
+    ratio = 0.1
+    sample_func(path, ratio)
     # make_train_valid_test()
 # 访问 https://www.jetbrains.com/help/pycharm/ 获取 PyCharm 帮助

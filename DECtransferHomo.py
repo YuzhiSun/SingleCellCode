@@ -62,7 +62,7 @@ def main(cuda, batch_size, pretrain_epochs, finetune_epochs, trans_epochs, dec_e
             {"lr": lr, "loss": loss, "validation_loss": validation_loss,},
             epoch,
         )
-    filename='ssr2_F_gcn'
+    filename='new2_F_gcn'
     sample = False
     if sample:
         train_path = f'../data/train/{filename}/source_for_model_sample.csv'
@@ -72,11 +72,12 @@ def main(cuda, batch_size, pretrain_epochs, finetune_epochs, trans_epochs, dec_e
         valid_path = f'../data/train/{filename}/valid_for_model.csv'
     batch_size = 256
     pre_epoch,pre_lr,pre_patient,pre_ratio=100,2,30,0.1
-    finetune_epochs,train_lr,train_patient,train_ratio=300,2,50,0.5
-    dec_epochs,dec_lr = 50,0.01
-    trans_train_epoch,trans_train_lr,trans_train_patient,trans_train_ratio = 300,2,50,0.5
-    trans_dec_epoch,trans_dec_lr = 100,0.01
+    finetune_epochs,train_lr,train_patient,train_ratio=100,0.5,30,0.5
+    dec_epochs,dec_lr = 50,0.001
+    trans_train_epoch,trans_train_lr,trans_train_patient,trans_train_ratio = 100,0.5,30,0.5
+    trans_dec_epoch,trans_dec_lr = 100,0.001
     ds_train, ds_val = GeneDotGCNDataSet(train_path), GeneDotGCNDataSet(valid_path)
+    #测试目标数据集
     # ds_val, ds_train = ds_train, ds_val
     input_size = ds_val.feas.shape[1]
     label_kind = len(set(list(ds_train.label.values)))
